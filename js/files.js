@@ -4,7 +4,7 @@ init = () => {
 
     let text;
     let data;
-
+    let names;
     const myForm = document.getElementById("myForm");
     const csvFile = document.getElementById("csvFile");
 
@@ -16,14 +16,24 @@ init = () => {
         reader.onload = function (e) {
             text = e.target.result;
             data = csvToArray(text, ",");
-            let names = csvNames(text)
-            document.write(JSON.stringify(data));
+            names = csvNames(text)
+            
+            //document.write(JSON.stringify(data));
 
         };
 
         reader.readAsText(input);
 
     });
+
+
+
+
+
+
+
+
+
 
     function csvNames(str) {
         const rows = str.slice(str.indexOf("\n") + 1).split("\n");
@@ -34,10 +44,7 @@ init = () => {
         return names;
     }
     function csvToArray(str, delimeter) {
-        //const headers = str.slice(0, str.indexOf("\n")).split(delimeter);
 
-        // slice from \n index + 1 to the end of the text
-        // use split to create an array of each csv value row
         const rows = str.slice(str.indexOf("\n") + 1).split("\n");
 
         let a = []
@@ -49,17 +56,13 @@ init = () => {
         for (let i = 0; i < a.length; i++) {
             b.push(a[i][1]);
         }
-        b.forEach(element =>
-            coords.push(element.split("\t",2))
-            
-            );
+        b.forEach(element => {
+            if (typeof element !== 'undefined') {
+                coords.push(element.split("\t", 2));
+            }
+        })
         let x = b[0].split("\t", 2);
-
-        //console.log(a);
-        //console.log(b);
-        console.log(x);
-        console.log(coords);
-        return a;
+        return coords;
     }
 }
 
